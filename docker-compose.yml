@@ -160,21 +160,6 @@ services:
       *logging
 
 
-  # Valkey used by Cart service
-  valkey-cart:
-    image: ${VALKEY_IMAGE}
-    container_name: valkey-cart
-    user: valkey
-    deploy:
-      resources:
-        limits:
-          memory: 20M
-    restart: unless-stopped
-    ports:
-      - "${VALKEY_PORT}"
-    logging: *logging
-
-
   # ********************
   # Telemetry Components
   # ********************
