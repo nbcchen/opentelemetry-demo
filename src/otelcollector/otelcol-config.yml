@@ -97,6 +97,12 @@ exporters:
 
 processors:
   batch:
+  memory_limiter:
+    # 75% of maximum memory up to 4G
+    limit_mib: 1536
+    # 25% of limit up to 2G
+    spike_limit_mib: 512
+    check_interval: 5s
   transform:
     error_mode: ignore
     trace_statements:
@@ -113,11 +119,11 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [transform, batch]
+      processors: [transform, memory_limiter, batch]
       exporters: [otlp, debug, spanmetrics]
     metrics:
       receivers: [hostmetrics, docker_stats, httpcheck/frontendproxy, otlp, prometheus, spanmetrics]
-      processors: [batch]
+      processors: [batch, memory_limiter]
       exporters: [otlphttp/prometheus, debug]
     logs:
       receivers: [otlp]
